@@ -41,7 +41,7 @@ export class SignupBusiness {
         const accessToken = this.authenticator.generateToken({
             id,
         });
-        console.log(accessToken)
+        
         return accessToken;
     }
 }
