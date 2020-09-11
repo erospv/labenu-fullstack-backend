@@ -46,7 +46,7 @@ export class SignupBusiness {
     }
 }
 
-interface SignupInputDTO {
+export interface SignupInputDTO {
     name: string,
     email: string,
     nickname: string,
