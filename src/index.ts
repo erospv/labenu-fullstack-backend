@@ -15,8 +15,6 @@ app.use(express.json());
 app.use("/user", userRouter);
 
 
-new LoginBusiness(new UserDatabase, new HashManager, new Authenticator).execute({emailOrNickname: "eros@gmail.com", password: "123456" }).then()
-
 const server = app.listen(3000, () => {
     if (server) {
       const address = server.address() as AddressInfo;

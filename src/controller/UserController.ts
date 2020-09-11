@@ -5,7 +5,8 @@ import { IdGenerator } from "../services/IdGenerator";
 import { HashManager } from "../services/HashManager";
 import { Authenticator } from "../services/Authenticator";
 import { SignupBusiness } from "../business/SingnupBusiness";
-import { SignupInputDTO } from "../model/User";
+import { SignupInputDTO, LoginInputDTO } from "../model/User";
+import { LoginBusiness } from "../business/LoginBusiness";
 
 
 export class UserController {
@@ -20,14 +21,14 @@ export class UserController {
                 new Authenticator()
             )
 
-            const input: SignupInputDTO = {
+            const signupData: SignupInputDTO = {
                 name: req.body.name,
                 email: req.body.email,
                 nickname: req.body.nickname,
                 password: req.body.password
             }
 
-            const token = await singnupBusiness.execute(input)
+            const token = await singnupBusiness.execute(signupData)
 
             res.status(201).send({ token });
 
@@ -38,4 +39,29 @@ export class UserController {
 
         await BaseDatabase.destroyConnection();
     }
+
+    async login(req: Request, res: Response) {
+        try {
+            const loginBusiness = new LoginBusiness(
+                new UserDatabase(),
+                new HashManager(),
+                new Authenticator()
+            )
+
+            const loginData: LoginInputDTO = {
+                emailOrNickname: req.body.emailOrNickname,
+                password: req.body.password
+            };
+
+            const token = await loginBusiness.execute(loginData)
+
+            res.status(200).send({ token });
+
+        } catch (error) {
+            res.status(error.errorCode || 400).send({ error: error.message });
+        }
+
+        await BaseDatabase.destroyConnection();
+    }
+
 }    
