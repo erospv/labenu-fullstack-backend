@@ -21,16 +21,21 @@ export class UserDatabase extends BaseDatabase {
     }
   }
 
-  public async getUserByEmail(email: string): Promise<User | undefined> {
-    const result = await this.getConnection()
-      .select("*")
-      .from(UserDatabase.TABLE_NAME)
-      .where({ email });
-
-    if(!result[0]) return
+  public async getUserByEmailOrNickname(emailOrNickname: string): Promise<User | undefined> {
+    try{
+      const result = await this.getConnection()
+        .select("*")
+        .from(UserDatabase.TABLE_NAME)
+        .where({ email: emailOrNickname })
+        .orWhere({ nickname: emailOrNickname });
   
-    return User.toUserModel(result[0])
+      if(!result[0]) return
     
+      return User.toUserModel(result[0])
+
+    } catch (error) {
+      throw new Error(error.sqlMessage || error.message);
+    }
   }
 
 
