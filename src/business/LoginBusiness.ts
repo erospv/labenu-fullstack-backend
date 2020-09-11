@@ -1,4 +1,4 @@
-
+import { LoginInputDTO } from "../model/User"
 import { HashManager } from "../services/HashManager";
 import { UserDatabase } from "../data/UserDatabase";
 import { Authenticator } from "../services/Authenticator";
@@ -42,7 +42,4 @@ export class LoginBusiness {
 	}
 }
 
-export interface LoginInputDTO {
-	emailOrNickname: string;
-	password: string;
-}
+

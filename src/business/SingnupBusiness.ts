@@ -1,3 +1,4 @@
+import { SignupInputDTO } from "../model/User"
 import { UserDatabase } from "../data/UserDatabase";
 import { IdGenerator } from "../services/IdGenerator";
 import { HashManager } from "../services/HashManager";
@@ -46,10 +47,5 @@ export class SignupBusiness {
     }
 }
 
-export interface SignupInputDTO {
-    name: string,
-    email: string,
-    nickname: string,
-    password: string
-}
+
 
