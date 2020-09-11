@@ -4,7 +4,7 @@ import { UserDatabase } from "../data/UserDatabase";
 import { IdGenerator } from "../services/IdGenerator";
 import { HashManager } from "../services/HashManager";
 import { Authenticator } from "../services/Authenticator";
-import { SignupBusiness } from "../business/SingnupBusiness";
+import { SignupBusiness } from "../business/SignupBusiness";
 import { SignupInputDTO, LoginInputDTO } from "../model/User";
 import { LoginBusiness } from "../business/LoginBusiness";
 
