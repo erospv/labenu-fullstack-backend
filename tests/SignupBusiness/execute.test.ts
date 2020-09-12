@@ -1,12 +1,27 @@
 import { SignupBusiness } from "../../src/business/SignupBusiness";
-import { SignupInputDTO } from "../../src/model/User";
+import { SignupInputDTO, User } from "../../src/model/User";
+import { UserDatabase } from "../../src/data/UserDatabase";
+import { IdGenerator } from "../../src/services/IdGenerator";
+import { HashManager } from "../../src/services/HashManager";
+import { Authenticator } from "../../src/services/Authenticator";
 
 describe("Testing createUser from UserBusiness", () => {
 
-    let userDatabase = {};
-    let idGenerator = {}
-    let hashGenerator = {};
-    let authenticator = {}
+    let userDatabase = {
+        createUser: jest.fn((user: User)=>{})
+    };
+
+    let idGenerator = {
+        generate: jest.fn(() => "id")
+    };
+
+    let hashManager = {
+        hash: jest.fn(() => "hash")
+    };
+    
+    let authenticator = {
+        generateToken: jest.fn(()=> "token")
+    };
 
     test("Should return an error when try create user with missing name ", async () => {
         expect.assertions(2);
@@ -14,16 +29,16 @@ describe("Testing createUser from UserBusiness", () => {
         const signupBusiness = new SignupBusiness(
             userDatabase as any,
             idGenerator as any,
-            hashGenerator as any,
+            hashManager as any,
             authenticator as any
         );
 
         try {
             const userInput: SignupInputDTO = {
                 name: "",
-                email: "eros@gmail.com",
-                nickname: "erospv",
-                password: "123456"
+                email: "donie@gmail.com",
+                nickname: "donie",
+                password: "00000000"
             }
 
             await signupBusiness.execute(userInput)
@@ -39,17 +54,17 @@ describe("Testing createUser from UserBusiness", () => {
         const signupBusiness = new SignupBusiness(
             userDatabase as any,
             idGenerator as any,
-            hashGenerator as any,
+            hashManager as any,
             authenticator as any
         );
 
         try {
 
             const userInput: SignupInputDTO = {
-                name: "Eros",
+                name: "Donatelo",
                 email: "",
-                nickname: "erospv",
-                password: "123456"
+                nickname: "donie",
+                password: "000000"
             }
 
             await signupBusiness.execute(userInput)
@@ -65,16 +80,16 @@ describe("Testing createUser from UserBusiness", () => {
         const signupBusiness = new SignupBusiness(
             userDatabase as any,
             idGenerator as any,
-            hashGenerator as any,
+            hashManager as any,
             authenticator as any
         );
 
         try {
             const userInput: SignupInputDTO = {
-                name: "Eros",
-                email: "eros.com",
-                nickname: "erospv",
-                password: "123456"
+                name: "Donatelo",
+                email: "donie.com",
+                nickname: "donie",
+                password: "000000"
             }
 
             await signupBusiness.execute(userInput)
@@ -90,15 +105,15 @@ describe("Testing createUser from UserBusiness", () => {
         const signupBusiness = new SignupBusiness(
             userDatabase as any,
             idGenerator as any,
-            hashGenerator as any,
+            hashManager as any,
             authenticator as any
         );
 
         try {
             const userInput: SignupInputDTO = {
-                name: "Eros",
-                email: "eros@gmail.com",
-                nickname: "erospv",
+                name: "Donatelo",
+                email: "donie@gmail.com",
+                nickname: "donie",
                 password: "1235"
             }
 
@@ -108,4 +123,30 @@ describe("Testing createUser from UserBusiness", () => {
             expect(error.message).toEqual("Invalid password");
         }
     });
+
+    test("Successful signup attempt", async () => {
+        
+        const signupBusiness = new SignupBusiness(
+            userDatabase as any,
+            idGenerator as any,
+            hashManager as any,
+            authenticator as any  
+        )
+
+        const userInput: SignupInputDTO = {
+            name: "Donatelo",
+            email: "donie@gmail.com",
+            nickname: "donie",
+            password: "santa-tartaruga"
+        }
+
+        await signupBusiness.execute(userInput)
+
+        expect(hashManager.hash).toBeCalled()
+        expect(idGenerator.generate).toBeCalled()
+        expect(userDatabase.createUser).toBeCalledWith(
+            new User("id", "Donatelo", "donie@gmail.com", "donie", "hash")
+        )
+        expect(authenticator.generateToken).toHaveReturnedWith("token")
+    })
 })    
