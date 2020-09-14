@@ -1,11 +1,8 @@
 import { SignupBusiness } from "../../src/business/SignupBusiness";
 import { SignupInputDTO, User } from "../../src/model/User";
-import { UserDatabase } from "../../src/data/UserDatabase";
-import { IdGenerator } from "../../src/services/IdGenerator";
-import { HashManager } from "../../src/services/HashManager";
-import { Authenticator } from "../../src/services/Authenticator";
 
-describe("Testing createUser from UserBusiness", () => {
+
+describe("Testing the SignupBusiness 'execute' method", () => {
 
     let userDatabase = {
         createUser: jest.fn((user: User)=>{})
