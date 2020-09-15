@@ -5,11 +5,9 @@ import { User, LoginInputDTO } from "../../src/model/User";
 describe("Testing the LoginBusiness 'execute' method", ()=>{
 
     let userDatabase = {}
-    let hashManager = {
-        compareHash: jest.fn(((password: string, userPassword: string) => false))
-    };
+    let hashManager = {};
     let authenticator = {
-        generate: jest.fn(()=> "token")
+        generateToken: jest.fn(()=> "token")
     };
 
     test("Should resturn an error when try login without email or nickname", async ()=>{
@@ -63,9 +61,10 @@ describe("Testing the LoginBusiness 'execute' method", ()=>{
         let getUserByEmailOrNickname = jest.fn((emailOrNickname: string) => {
             return new User("id", "Manu Chao", "clandestino@gmail.com", "ManoNegra", "mala-vida")
         })
+        let compareHash =  jest.fn(((password: string, userPassword: string) => false))
         
         userDatabase = { getUserByEmailOrNickname }
-        
+        hashManager = { compareHash }
         try {
             const loginBusiness = new LoginBusiness(
                 userDatabase as any,
@@ -84,7 +83,7 @@ describe("Testing the LoginBusiness 'execute' method", ()=>{
             expect(error.errorCode).toBe(401);
             expect(error.message).toEqual("Incorrect email or password");
             expect(getUserByEmailOrNickname).toHaveBeenCalledWith("clandestino@gmail.com")
-            expect(hashManager.compareHash).toHaveBeenCalledWith("12", "mala-vida")
+            expect(compareHash).toHaveBeenCalledWith("12", "mala-vida")
         }
     });
 
@@ -114,6 +113,34 @@ describe("Testing the LoginBusiness 'execute' method", ()=>{
             expect(error.message).toEqual("Incorrect email or password");
             expect(getUserByEmailOrNickname).toHaveBeenCalledWith("mano-negra@gmail.com")
         }
+    });
+
+    test("Returns token whit a successful login attempt", async ()=>{
+        
+        let getUserByEmailOrNickname = jest.fn((emailOrNickname: string) => {
+            return new User("id", "Manu Chao", "clandestino@gmail.com", "ManoNegra", "mala-vida")
+        })
+        let compareHash =  jest.fn(((password: string, userPassword: string) => true))
+        
+        userDatabase = { getUserByEmailOrNickname }
+        hashManager = { compareHash }
+               
+        const loginBusiness = new LoginBusiness(
+            userDatabase as any,
+            hashManager as any,
+            authenticator as any
+        );
+
+        const loginInput: LoginInputDTO = {
+            emailOrNickname: "clandestino@gmail.com",
+            password: "mala-vida"
+        }
+
+        await loginBusiness.execute(loginInput);
+
+        expect(getUserByEmailOrNickname).toHaveBeenCalledWith("clandestino@gmail.com")
+        expect(compareHash).toHaveBeenCalledWith("mala-vida", "mala-vida")
+        expect(authenticator.generateToken).toHaveReturnedWith("token")
     });
 
 })    
