@@ -10,7 +10,7 @@ export class HashManager {
         return result;
     }
 
-    public async compare(text: string, hash: string): Promise<boolean>{
+    public async compareHash(text: string, hash: string): Promise<boolean>{
         return await bcrypt.compare(text, hash);
     }
 

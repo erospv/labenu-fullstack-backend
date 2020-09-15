@@ -25,7 +25,7 @@ export class LoginBusiness {
              throw new UnauthorizedError("Incorrect email or password")
          }
          
-         const hashCompare = await this.hashManager.compare(
+         const hashCompare = await this.hashManager.compareHash(
              input.password,
              user.getPassword()
          );
