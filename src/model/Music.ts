@@ -75,6 +75,7 @@ export interface PostMusicInputDTO {
     title: string,
     authorId: string,
     file: string,
-    albumId: string 
+    genres: string[],
+    albumId?: string
 }
 
