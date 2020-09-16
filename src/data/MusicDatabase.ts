@@ -23,16 +23,34 @@ export class MusicDatabase extends BaseDatabase {
     }
   }  
 
-  public async insertGenresToMusic(genres: string[] ): Promise<void> {
-      try {
-          const musicGenres = genres.map()
+  public async insertGenresToMusic(genresIds: string[], musicId: string): Promise<void> {
+      try { 
+          const musicGenres = genresIds.map((item) => {
+              return {
+                  genre_id: item,
+                  music_id: musicId
+              }
+          })
           await this.getConnection()
-          .insert(genres)
+            .insert(musicGenres)
+            .into(MusicDatabase.MUSIC_GENRE_TABLE)
       } catch (error) {
           throw new Error(error.sqlMessage || error.message);
       }
   }
 
+  public async getGenresIdsByNames(genres: string[]): Promise<string[]> {
+      try{
+          const genresIds = await this.getConnection()
+            .select("id")
+            .from(MusicDatabase.GENRE_TABLE)
+            .whereIn("genre", genres)
+          console.log(genresIds)
+          return genresIds  
+      } catch (error) {
+        throw new Error(error.sqlMessage || error.message);
+      }
+  }
 
 
 }
