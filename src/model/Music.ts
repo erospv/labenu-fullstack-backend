@@ -3,9 +3,8 @@ export class Music {
 		private id: string,
 		private title: string,
 		private authorId: string,
-        private createdAt: string,
         private file: string,
-		private albumId: string
+		private album: string
 	) {}
 
 	getId() {
@@ -16,20 +15,16 @@ export class Music {
 		return this.title;
 	}
 
-	getauthorId() {
+	getAuthorId() {
 		return this.authorId;
 	}
-
-	getcreatedAt() {
-		return this.createdAt;
-    }
     
     getFile() {
 		return this.file;
     }
     
-    getAlbumId() {
-        return this.albumId
+    getAlbum() {
+        return this.album
     }
 
 	setId(id: string) {
@@ -40,20 +35,16 @@ export class Music {
 		this.title = title;
 	}
 
-	setauthorId(authorId: string) {
+	setAuthorId(authorId: string) {
 		this.authorId = authorId;
 	}
-
-	setcreatedAt(createdAt: string) {
-		this.createdAt = createdAt;
-    }
     
     setFile(file: string) {
 		this.file = file;
     }
     
-    setAlbumId(albumId: string) {
-        this.albumId = albumId
+    setAlbumId(album: string) {
+        this.album = album
     }
 
 	static toMusicModel(data: any): Music {
@@ -63,9 +54,8 @@ export class Music {
                 data.id,
                 data.title,
                 data.authorId,
-                data.createdAt,
                 data.file,
-                data.albumId
+                data.album
             )
         ) 
 	}
@@ -76,6 +66,6 @@ export interface PostMusicInputDTO {
     authorId: string,
     file: string,
     genres: string[],
-    albumId?: string
+    album: string
 }
 

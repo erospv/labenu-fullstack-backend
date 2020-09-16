@@ -13,15 +13,28 @@ export class MusicDatabase extends BaseDatabase {
         .insert({
           id: music.getId(),
           title: music.getTitle(),
-          author_id: music.getauthorId(),
+          author_id: music.getAuthorId(),
           file: music.getFile(),
-          album_id: music.getAlbumId()
+          album: music.getAlbum()
         })
         .into(MusicDatabase.MUSIC_TABLE);
     } catch (error) {
       throw new Error(error.sqlMessage || error.message);
     }
   }  
+
+  public async getGenresIdsByNames(genres: string[]): Promise<string[]> {
+    try{
+        const genresIds = await this.getConnection()
+          .select("id")
+          .from(MusicDatabase.GENRE_TABLE)
+          .whereIn("genre", genres)
+        console.log(genresIds)
+        return genresIds  
+    } catch (error) {
+      throw new Error(error.sqlMessage || error.message);
+    }
+}
 
   public async insertGenresToMusic(genresIds: string[], musicId: string): Promise<void> {
       try { 
@@ -39,18 +52,7 @@ export class MusicDatabase extends BaseDatabase {
       }
   }
 
-  public async getGenresIdsByNames(genres: string[]): Promise<string[]> {
-      try{
-          const genresIds = await this.getConnection()
-            .select("id")
-            .from(MusicDatabase.GENRE_TABLE)
-            .whereIn("genre", genres)
-          console.log(genresIds)
-          return genresIds  
-      } catch (error) {
-        throw new Error(error.sqlMessage || error.message);
-      }
-  }
+  
 
 
 }
