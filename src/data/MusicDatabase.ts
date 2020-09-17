@@ -51,9 +51,5 @@ export class MusicDatabase extends BaseDatabase {
           throw new Error(error.sqlMessage || error.message);
       }
   }
-
-  
-
-
 }
 

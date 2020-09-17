@@ -37,9 +37,4 @@ export class MusicController {
         }
         await BaseDatabase.destroyConnection();
     }
-
-
-
-
-
 }
