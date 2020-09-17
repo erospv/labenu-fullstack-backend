@@ -29,18 +29,18 @@ export class MusicDatabase extends BaseDatabase {
           .select("id")
           .from(MusicDatabase.GENRE_TABLE)
           .whereIn("genre", genres)
-        console.log(genresIds)
+        
         return genresIds  
     } catch (error) {
       throw new Error(error.sqlMessage || error.message);
     }
 }
 
-  public async insertGenresToMusic(genresIds: string[], musicId: string): Promise<void> {
+  public async insertGenresToMusic(genresIds: any[], musicId: string): Promise<void> {
       try { 
           const musicGenres = genresIds.map((item) => {
               return {
-                  genre_id: item,
+                  genre_id: item.id,
                   music_id: musicId
               }
           })

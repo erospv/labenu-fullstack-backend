@@ -1,10 +1,10 @@
 import express from "express";
-// import { MusicController } from "../controller/MusicController";
+import { MusicController } from "../controller/MusicController";
 
 
 export const musicRouter = express.Router();
 
-// const musicController = new MusicController();
+const musicController = new MusicController();
 
-// musicRouter.post("/create", musicController.postMusic);
+musicRouter.post("/create", musicController.postMusic);
 

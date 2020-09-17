@@ -1,37 +1,45 @@
+import { Request, Response } from "express"
+import { CreateMusicBusiness } from "../business/CreateMusicBusiness";
+import { MusicDatabase } from "../data/MusicDatabase";
+import { Authenticator } from "../services/Authenticator";
+import { IdGenerator } from "../services/IdGenerator";
+import {PostMusicInputDTO } from "../model/Music"
+import { BaseDatabase } from "../data/BaseDatabase";
 
 
-// export class MusicController {
+export class MusicController {
 
-//     async postMusic(req: Request, res: Response) {
-//         try {
+    async postMusic(req: Request, res: Response) {
+        try {
+            const musicBusiness = new CreateMusicBusiness(
+                new MusicDatabase(),
+                new IdGenerator(),
+                new Authenticator()
+            )
 
-//             const musicBusiness = new MusicBusiness(
-//                 new MusicDatabase(),
-//                 new IdGenerator(),
-//                 new Authenticator()
-//             )
+            const token = req.headers.authorization as string 
 
-//             const postData: PostInputDTO = {
-//                 name: req.body.name,
-//                 email: req.body.email,
-//                 nickname: req.body.nickname,
-//                 password: req.body.password
-//             }
+            const { title, file, genres, album } = req.body
 
-//             const token = await singnupBusiness.execute(signupData)
+            const postData: PostMusicInputDTO = {
+                title,
+                file,
+                genres,
+                album
+            }
 
-//             res.status(201).send({ token });
+            await musicBusiness.execute(postData, token)
 
-//         } catch (error) {
-            
-//             res.status(error.errorCode || 400).send({ error: error.message });
-//         }
+            res.sendStatus(201);
 
-//         await BaseDatabase.destroyConnection();
-//     }
-
-
-
+        } catch (error) {     
+            res.status(error.errorCode || 400).send({ error: error.message });
+        }
+        await BaseDatabase.destroyConnection();
+    }
 
 
-// }
+
+
+
+}

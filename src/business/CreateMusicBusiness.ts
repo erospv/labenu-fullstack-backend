@@ -19,7 +19,7 @@ export class CreateMusicBusiness {
             throw new UnauthorizedError("User must be logged");
         }
 
-        if (!input.title || !input.file || !input.authorId || input.genres.length < 1) {
+        if (!input.title || !input.file || input.genres.length < 1) {
             throw new InvalidParameterError("Fill all the fields");
         }
 
@@ -32,7 +32,7 @@ export class CreateMusicBusiness {
             title: input.title,
             authorId: authenticationData.id,
             file: input.file,
-            albumId: input.album
+            album: input.album ? input.album : "Single"
         })
 
         await this.musicDatabase.createMusic(newMusic) 

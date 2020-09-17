@@ -62,8 +62,7 @@ export class Music {
 }
 
 export interface PostMusicInputDTO {
-    title: string,
-    authorId: string,
+    title: string
     file: string,
     genres: string[],
     album: string
