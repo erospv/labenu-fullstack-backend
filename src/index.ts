@@ -13,12 +13,12 @@ app.use(express.json());
 app.use("/user", userRouter);
 app.use("/music", musicRouter);
 
-const server = app.listen(3000, () => {
+const server = app.listen(Number(process.env.PORT) ||3003, () => {
     if (server) {
       const address = server.address() as AddressInfo;
-      console.log(`Servidor rodando em http://localhost:${address.port}`);
+      console.log(`Server running on https://labesound.azurewebsites.net:${address.port}`);
     } else {
-      console.error(`Falha ao rodar o servidor.`);
+      console.error(`Server start failed`);
     }
   });
 
