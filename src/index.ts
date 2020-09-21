@@ -13,6 +13,8 @@ app.use(express.json());
 app.use("/user", userRouter);
 app.use("/music", musicRouter);
 
+console.log("teste")
+
 const server = app.listen(Number(process.env.PORT) ||3003, () => {
     if (server) {
       const address = server.address() as AddressInfo;
