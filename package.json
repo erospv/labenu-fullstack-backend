@@ -4,9 +4,8 @@
   "description": "projeto fullstack - backend",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
     "test": "node ./node_modules/jest/bin/jest.js",
-    "start": "node ./build/index.js",
+    "start": "tsc && node build/index.js",
     "start:dev": "ts-node-dev ./src/index.ts"
   },
   "keywords": [
