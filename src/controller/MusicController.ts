@@ -33,7 +33,7 @@ export class MusicController {
             res.sendStatus(201);
 
         } catch (error) {     
-            res.status(error.errorCode || 400).send({ error: error.message });
+            res.status(error.errorCode || 400).send({ message: error.message });
         }
         await BaseDatabase.destroyConnection();
     }
